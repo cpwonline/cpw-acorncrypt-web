@@ -124,6 +124,16 @@
 		return $m_m;
 	}
 	
+//Conversión de caracteres especiales a entidades HTML-------------------------------------------------------------------
+	function conv_cHTML($men){
+		$a = htmlentities($men);
+		$fp = fopen("fichero.txt", "w");
+		fputs($fp, $a);
+		fclose($fp);
+		//echo "<br>Esta es el nuevo mensaje con entidades html: <textarea>".$a."</textarea>";
+		return $a;
+	}
+
 //CIFRADO-----------------------------------------------------------------------------------
 	function DAL15_ENCODE(&$m, &$c, &$t){
 		// Llamada a los caracteres y caracteres aleatorios
@@ -133,11 +143,7 @@
 			$ale = caracteres_ale();
 		//MENSAJE
 			//Conversión del mensaje con caracteres especiales a entidades de HTML
-				$var = $m;
-				$a = htmlentities($var);
-				$b = html_entity_decode($a);
-				$m = $b;
-				//echo "<br>Esta es el nuevo mensaje con entidades html: <textarea>".$m."</textarea>";
+				$m = conv_cHTML($m);
 			//Conversión del mensaje a números enteros (0-9)
 				$m_s = array();
 				for($b=0;$b<strlen($m);$b++){
@@ -153,11 +159,8 @@
 				$m_m = A_2xn($m_s);
 			
 		//CLAVE
-			//Conversión del mensaje con caracteres especiales a entidades de HTML
-				$var = $c;
-				$a = htmlentities($var);
-				$b = html_entity_decode($a);
-				$c = $b;
+			//Conversión de la clave con caracteres especiales a entidades de HTML
+				$c = conv_cHTML($c);
 				//echo "<br>Esta es la nueva clave con entidades html: <textarea>".$c."</textarea>";
 			//Conversión de la clave a 128 bits
 				$c_m = array();
@@ -275,9 +278,11 @@
 			$ale = caracteres_ale();
 			
 		//CLAVE
-			$c_m = array();
-			$c_m = convClave($c);
-			
+			//Conversión de la clave con caracteres especiales a entidades de HTML
+				$c = conv_cHTML($c);
+			//Conversión de la clave a 128 bits
+				$c_m = array();
+				$c_m = convClave($c);
 			//INVERSA DE LA CLAVE
 				//Determinante
 					$c_det = $c_m[0][0]*$c_m[1][1]-$c_m[0][1]*$c_m[1][0];
