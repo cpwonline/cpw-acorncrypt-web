@@ -352,7 +352,8 @@
 					for($b=0;$b<count($m_des[$a]);$b++){
 						$val = $m_des[$a][$b];
 						//Aqui se sustituye el numero por un caracter
-						if(count($cara)<(int)$val || (int)$val<0)
+						$val_2 = (int)$val + 1;
+						if(count($cara) < $val_2 || (int)$val<0)
 							$m_descifrado.= "_";
 						else
 							$m_descifrado.= $cara[$val];
