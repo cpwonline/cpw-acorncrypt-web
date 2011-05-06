@@ -219,7 +219,7 @@
 			}
 		
 		//Retorno del mensaje cifrado
-			echo $men_cifrado;
+			echo "<br>Este el mensaje cifrado: ".$men_cifrado;
 	}
 	function ENCODE_2(&$m_cif){
 		echo "<br>Cifrado tipo 2<br>";
@@ -249,7 +249,7 @@
 			}
 		
 		//Retorno del mensaje cifrado
-			echo $men_cifrado;
+			return $men_cifrado;
 	}
 	function ENCODE_3(&$m_cif){
 		echo "hola";
