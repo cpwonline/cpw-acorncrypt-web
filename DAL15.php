@@ -11,7 +11,7 @@
 
 	function caracteres(){
 		// Caracteres que se pueden codificar
-		return ['vacio', '','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '|', '°', '¬', '!', '"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '¡', '¿', '¨', '´', '*', '+', '~', '[', ']', '{','}', '^', '_', '-', '.', ',', ';', ':', '@', ' '];
+		return ['vacio', '','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '|', '!', '"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '*', '+', '~', '[', ']', '{','}', '^', '_', '-', '.', ',', ';', ':', '@', ' '];
 	}
 	function caracteres_ale(){
 		//Caracteres aleatorios disponibles
@@ -124,7 +124,6 @@
 	}
 	
 //CIFRADO-----------------------------------------------------------------------------------
-	//CIFRADO 1---------------------------------------------------------------------------------
 	function DAL15_ENCODE(&$m, &$c, &$t){
 		// Llamada a los caracteres y caracteres aleatorios
 			$cara = array();
@@ -161,20 +160,20 @@
 			//Llamada a los tipos de Cifrado (1, 2, 3)
 				switch($t){
 					case 1: 
-						ENCODE_1($m_cif);
+						return ENCODE_1($m_cif);
 						break;
 					case 2: 
-						ENCODE_2($m_cif);
+						return ENCODE_2($m_cif);
 						break;
 					case 3: 
-						ENCODE_3($m_cif);
+						return ENCODE_3($m_cif);
 						break;
 					default: 
 						break;
 				}
 	}
 	
-	//CIFRADO 2---------------------------------------------------------------------------------
+	//CIFRADO 1---------------------------------------------------------------------------------
 	function ENCODE_1(&$m_cif){
 		echo "<br>Cifrado tipo 1<br>";
 		// Llamada a los caracteres y caracteres aleatorios
@@ -219,7 +218,7 @@
 			}
 		
 		//Retorno del mensaje cifrado
-			echo "<br>Este el mensaje cifrado: ".$men_cifrado;
+			return ($men_cifrado);
 	}
 	function ENCODE_2(&$m_cif){
 		echo "<br>Cifrado tipo 2<br>";
@@ -249,7 +248,7 @@
 			}
 		
 		//Retorno del mensaje cifrado
-			return $men_cifrado;
+			return($men_cifrado);
 	}
 	function ENCODE_3(&$m_cif){
 		echo "hola";
