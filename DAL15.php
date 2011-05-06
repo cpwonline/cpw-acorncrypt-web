@@ -27,7 +27,7 @@
 			$ale = caracteres_ale();
 		//Conversión de la clave a números enteros (0-9)
 			$c_s = array();
-			for($b=0;$b<count($c);$b++){
+			for($b=0;$b<strlen($c);$b++){
 				for($a=1;$a<count($cara);$a++){
 					//echo "<br>Cara: $b-$a-$c[$b]-".$cara[$a];
 					if($c[$b] == $cara[$a]){
