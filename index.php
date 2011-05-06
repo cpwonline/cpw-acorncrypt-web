@@ -35,7 +35,7 @@
 				background:#00cc00
 			}
 			section.results{text-align:center;}
-			textarea.result{padding:.3cm;width:90%;float:none;border:none;border:1px solid #00cc00;}
+			textarea.result{padding:.3cm;width:90%;float:none;border:none;border:1px solid #00cc00;height:7cm;}
 		</style>
 	</head>
 	<body>
