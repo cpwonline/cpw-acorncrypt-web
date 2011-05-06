@@ -137,14 +137,10 @@
 			//Conversión del mensaje a números enteros (0-9)
 				$m_s = array();
 				for($b=0;$b<strlen($m);$b++){
-					for($a=1;$a<count($cara);$a++){
-						//echo "<br>Cara: $b-$a-$m[$b]-".$cara[$a];
-						if($m[$b] == $cara[$a]){
-							$m_s["a"][] = $a;
-							////echo "-SI-<br>";
-							break;
+					//Comprobar si exite el numero indicado en el array
+						if(in_array($m[$b], $cara, true)){
+							$m_s["a"][] = array_search($m[$b], $cara);
 						}
-					}
 				}
 				////echo "<br><br>Caracteres del mensaje cambiados a: <br>";
 				////var_dump($m_s);
