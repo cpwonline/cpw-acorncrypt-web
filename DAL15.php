@@ -302,6 +302,11 @@
 				//var_dump($m_s);
 			//Eliminación del elemento vacío
 				unset($m_s["a"][count($m_s["a"])-1]);
+				if(in_array("", $m_s["a"])){
+					$ind = array_search("", $m_s["a"]);
+					$m_s["a"][$ind] = 0;
+					//echo "elemento vacio cambiado por 0, ind: ".$ind;
+				}
 				//echo "<br>Tabla del mensaje sin el elemento vacio: <br>";
 				//var_dump($m_s);
 			
