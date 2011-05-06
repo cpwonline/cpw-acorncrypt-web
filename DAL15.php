@@ -106,8 +106,11 @@
 				$m_s["a"][] = 1;
 			}else
 				$m_s["b"]["ele_xfila"] = $m_s["b"]["tot_ele"]/2;
-			////echo "<br>Nuestra tabla tiene ".count($m_s["a"])." elementos:<br>";
-			////var_dump($m_s["a"]);
+			//echo "<br>Nuestra tabla tiene ".count($m_s["a"])." elementos:<br>";
+			//var_dump($m_s["a"]);
+		//Re-indexar el array para evitar desbordamientos
+			$m_s["a"] = array_values($m_s["a"]);
+			//var_dump($m_s["a"]);
 		//Ciclo para las fila
 		$cont = -1;
 		$m_m = array();
@@ -115,7 +118,7 @@
 			for($b=0;$b<$m_s["b"]["ele_xfila"];$b++){
 				$cont += 1;//Para ir de una mitad a la otra
 				$m_m[$a][] = $m_s["a"][$cont];
-				////echo "<br>Nuestro cont aqui es: $cont";
+				//echo "<br>Nuestro cont aqui es: $cont";
 			}
 		}
 		////echo "<br>Matriz de 2x".$m_s["b"]["ele_xfila"]." que contiene el mensaje: <br>";
