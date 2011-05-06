@@ -3,60 +3,98 @@
 	<head>
 		<title>Sistema de codificaci&oacute;n DAL15</title>
 		<meta sharset="utf-8";>
+		<style>
+			*{padding:0;margin:0;}
+			body{padding:2cm 0 2cm 0;font-family:sans-serif;text-align:center;}
+			h3{font-size:20pt;float:none;color:#00cc00}
+			h4{font-size:14pt;display:inline-block;float:none;color:#777;margin-bottom:.7cm;}
+			form.cifrado, form.descifrado{;padding:.8cm;margin-bottom:.5cm;}
+			form.cifrado input,
+			form.descifrado input{
+				background:none;
+				border:none;
+				padding:10px 15px;
+				border-bottom: 1px solid #00cc00;
+				border-top: 1px solid #fff;
+				border-right: 1px solid #fff;
+				border-left: 1px solid #fff;
+				color:#00cc00;
+			}
+			form.cifrado input:hover,form.descifrado input:hover{border:1px solid #00cc00;}
+			form.cifrado button,
+			form.descifrado button{
+				padding:5px 10px;
+				background:none;
+				border:1px solid #00cc00;
+				color:#00cc00;
+				cursor:pointer;
+			}
+			form.cifrado button:hover,
+			form.descifrado button:hover{
+				color:#fff;
+				background:#00cc00
+			}
+			section.results{text-align:center;}
+			textarea.result{padding:.3cm;width:90%;float:none;border:none;border:1px solid #00cc00;}
+		</style>
 	</head>
-	<body style="font-family:courier new;">
-		<form action="" method="POST">
+	<body>
+		<h3>¡Hola! Bienvenido a DAL15</h3>
+		<h4>El sistema que le ayudar&aacute; a tener sus datos seguros</h3>
+		<form action="" method="POST" class="cifrado">
 			<?php
-				if(isset($_POST['mensaje_codificar'])){
+				if(isset($_POST['mensaje_cifrar'])){
 			?>
-					<input type="text" name="mensaje_codificar" value="<?=$_POST['mensaje_codificar']?>"/>
-					<input type="text" name="claveCO" value="<?=$_POST['claveCO']?>"/>
-					<input type="tel" name="tipo" value="<?=$_POST['tipo']?>"/>
+					<input placeholder="Mensaje" type="text" name="mensaje_cifrar" value="<?=$_POST['mensaje_cifrar']?>"/>
+					<input placeholder="Clave" type="text" name="claveCO" value="<?=$_POST['claveCO']?>"/>
+					<input placeholder="Tipo" type="tel" name="tipo" value="<?=$_POST['tipo']?>"/>
 			<?php
 				}else{
 			?>
-				<input type="text" name="mensaje_codificar"/>
-				<input type="text"name="claveCO"/>
-					<input type="tel" name="tipo"/>
+				<input placeholder="Mensaje" type="text" name="mensaje_cifrar"/>
+				<input placeholder="Clave" type="text"name="claveCO"/>
+					<input placeholder="Tipo" type="tel" name="tipo"/>
 			<?php
 				}
 			?>
 			
-			<button name="codificar">Codificar</button>
+			<button name="cifrar">cifrar</button>
 		</form>
-		<form action="" method="POST">
+		<form action="" method="POST" class="descifrado">
 			<?php
-				if(isset($_POST['mensaje_decodificar'])){
+				if(isset($_POST['mensaje_descifrar'])){
 			?>
-				<input type="text" name="mensaje_decodificar" value="<?=$_POST['mensaje_decodificar']?>"/>
-				<input type="text" name="claveDE" value="<?=$_POST['claveDE']?>"/>
-					<input type="tel" name="tipo" value="<?=$_POST['tipo']?>"/>
+				<input placeholder="Mensaje" type="text" name="mensaje_descifrar" value="<?=$_POST['mensaje_descifrar']?>"/>
+				<input placeholder="Clave" type="text" name="claveDE" value="<?=$_POST['claveDE']?>"/>
+					<input placeholder="Tipo" type="tel" name="tipo" value="<?=$_POST['tipo']?>"/>
 			<?php
 				}else{
 			?>
-				<input type="text" name="mensaje_decodificar"/>
-				<input type="text"name="claveDE"/>
-					<input type="tel" name="tipo"/>
+				<input placeholder="Mensaje" type="text" name="mensaje_descifrar"/>
+				<input placeholder="Clave" type="text"name="claveDE"/>
+					<input placeholder="Tipo" type="tel" name="tipo"/>
 			<?php
 				}
 			?>
-			<button name="decodificar">Decodificar</button>
+			<button name="descifrar">descifrar</button>
 		</form>
+		<section class="results">
 		<?php
-			include('DAL15_nuevo.php');
-			if(isset($_POST['codificar'])){
-				$mensaje = $_POST['mensaje_codificar'];//Mensaje CO
+			include('DAL15.php');
+			if(isset($_POST['cifrar'])){
+				$mensaje = $_POST['mensaje_cifrar'];//Mensaje CO
 				$clave=$_POST['claveCO'];
 				$tipo = $_POST['tipo'];
-				echo "<textarea>".DAL15_ENCODE($mensaje, $clave, $tipo)."</textarea>";
+				echo "<textarea class='result'>".DAL15_ENCODE($mensaje, $clave, $tipo)."</textarea>";
 			}
-			if(isset($_POST['decodificar'])){
-				$mensaje2 = $_POST['mensaje_decodificar'];//Mensaje DE
+			if(isset($_POST['descifrar'])){
+				$mensaje2 = $_POST['mensaje_descifrar'];//Mensaje DE
 				$clave2=$_POST['claveDE'];
 				$tipo = $_POST['tipo'];
-				echo "<textarea>".DAL15_DECODE($mensaje2, $clave2, $tipo)."</textarea>";
+				echo "<textarea class='result'>".DAL15_DECODE($mensaje2, $clave2, $tipo)."</textarea>";
 			}
 			
 		?>
+		</section>
 	</body>
 </html>
