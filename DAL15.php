@@ -17,7 +17,6 @@
 		//Caracteres aleatorios disponibles
 		return ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 	}
-	
 //CONVERSIÓN DE LA CLAVE-----------------------------------------------------------------------------------
 	function convClave(&$c){
 		// Llamada a los caracteres y caracteres aleatorios
@@ -193,7 +192,7 @@
 							//echo "-ele_mento: ".$pr[$a];
 							$pal.=$pr[$a];
 						}else{
-							if($pal>52)
+							if($pal>count($ale)-1)
 								$pal = $pal[0];
 							//echo "<br>-------ale: ".$ale[$pal]." pal: $pal";
 							$elemento = $elemento.$ale[$pal];
