@@ -316,31 +316,10 @@
 				
 				echo "<br>Descifrado de los caraceres: <br>";
 				var_dump($m_des);
-			//Conversión a String
-				$var = "";
-				for($a=0;$a<2;$a++){
-					foreach($m_des[$a] as &$elemento){
-						$var.= $elemento."";
-						$elemento = $var;
-						$var = "";
-					}	
-					unset($elemento);
-				}
 			//Conversión a números enteros
-			$var = "";
 			for($a=0;$a<2;$a++){
 				foreach($m_des[$a] as &$elemento){
-					$do = $elemento;
-					for($b=0;$b<strlen($do);$b++){
-						echo "<br>estamos en: ".$elemento[$b];
-						if($elemento[$b]=="." || $elemento[$b]==",")
-							break;
-						else{
-							$var.=$elemento[$b];
-						}
-					}
-					$elemento = $var;
-					$var = "";
+					$elemento = round($elemento);
 				}	
 				unset($elemento);
 			}
