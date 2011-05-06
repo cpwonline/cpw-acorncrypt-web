@@ -8,7 +8,6 @@
 	//V 5.3.1
 	
 //CARACTERES-----------------------------------------------------------------------------------
-
 	function caracteres(){
 		// Caracteres que se pueden codificar
 		return ['vacio', '','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '|', '!', '"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '*', '+', '~', '[', ']', '{','}', '^', '_', '-', '.', ',', ';', ':', '@', ' '];
@@ -133,6 +132,12 @@
 			$cara = caracteres();
 			$ale = caracteres_ale();
 		//MENSAJE
+			//Conversión del mensaje con caracteres especiales a entidades de HTML
+				$var = $m;
+				$a = htmlentities($var);
+				$b = html_entity_decode($a);
+				$m = $b;
+				//echo "<br>Esta es el nuevo mensaje con entidades html: <textarea>".$m."</textarea>";
 			//Conversión del mensaje a números enteros (0-9)
 				$m_s = array();
 				for($b=0;$b<strlen($m);$b++){
@@ -148,27 +153,34 @@
 				$m_m = A_2xn($m_s);
 			
 		//CLAVE
-			$c_m = array();
-			$c_m = convClave($c);
-		//Cifrado final
-			//Multiplicado de las matrices (Mensaje y clave)
-				$m_cif = array();
-				$m_cif = cif_des($m_m, $c_m);
-				
-			//Llamada a los tipos de Cifrado (1, 2, 3)
-				switch($t){
-					case 1: 
-						return ENCODE_1($m_cif);
-						break;
-					case 2: 
-						return ENCODE_2($m_cif);
-						break;
-					case 3: 
-						return ENCODE_3($m_cif);
-						break;
-					default: 
-						break;
-				}
+			//Conversión del mensaje con caracteres especiales a entidades de HTML
+				$var = $c;
+				$a = htmlentities($var);
+				$b = html_entity_decode($a);
+				$c = $b;
+				//echo "<br>Esta es la nueva clave con entidades html: <textarea>".$c."</textarea>";
+			//Conversión de la clave a 128 bits
+				$c_m = array();
+				$c_m = convClave($c);
+			//Cifrado final
+				//Multiplicado de las matrices (Mensaje y clave)
+					$m_cif = array();
+					$m_cif = cif_des($m_m, $c_m);
+					
+		//Llamada a los tipos de Cifrado (1, 2, 3)
+			switch($t){
+				case 1: 
+					return ENCODE_1($m_cif);
+					break;
+				case 2: 
+					return ENCODE_2($m_cif);
+					break;
+				case 3: 
+					return ENCODE_3($m_cif);
+					break;
+				default: 
+					break;
+			}
 	}
 	
 	//CIFRADO 1---------------------------------------------------------------------------------
