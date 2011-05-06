@@ -271,6 +271,7 @@
 			//INVERSA DE LA CLAVE
 				//Determinante
 					$c_det = $c_m[0][0]*$c_m[1][1]-$c_m[0][1]*$c_m[1][0];
+					if($c_det == 0) $c_det = 1;//Para evitar la disión entre 0
 					//echo "<br>Este es det: $c_det <br>";
 				//Adjunta
 					$c_adj = [
