@@ -27,12 +27,12 @@
 			$ale = caracteres_ale();
 		//Conversión de la clave a números enteros (0-9)
 			$c_s = array();
-			for($b=0;$b<16;$b++){
+			for($b=0;$b<count($c);$b++){
 				for($a=1;$a<count($cara);$a++){
 					//echo "<br>Cara: $b-$a-$c[$b]-".$cara[$a];
 					if($c[$b] == $cara[$a]){
 						$c_s[] = $a;
-						////echo "-SI-<br>";
+						//echo "-SI-<br>";
 						break;
 					}
 				}
