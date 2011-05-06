@@ -182,6 +182,7 @@
 					return ENCODE_3($m_cif);
 					break;
 				default: 
+					return ENCODE_1($m_cif);
 					break;
 			}
 	}
