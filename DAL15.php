@@ -7,6 +7,7 @@
 	
 	//V 5.3.1
 	
+
 //CARACTERES-----------------------------------------------------------------------------------
 	function caracteres(){
 		// Caracteres que se pueden codificar
@@ -134,6 +135,25 @@
 		return $a;
 	}
 
+//Funcion para imprimir (ordenadamente) los elementos de un array
+	function imp_array($array, $dimension){
+		switch ($dimension) {
+			case 1:
+				foreach($array as $key => $elemento){
+					echo $key.":".$elemento."<br>";
+				}
+				break;
+			case 2:
+				foreach($array as $i => $elemento){
+					echo "<br>Fila ".$i."<br>";
+					for($a = 0; $a < count($elemento); $a++) {
+						echo "---".$a.":".$elemento[$a]."<br>";
+					}
+				}
+				break;
+		}
+	}
+
 //CIFRADO-----------------------------------------------------------------------------------
 	function DAL15_ENCODE(&$m, &$c, &$t){
 		// Llamada a los caracteres y caracteres aleatorios
@@ -188,85 +208,189 @@
 	}
 	
 	//CIFRADO 1---------------------------------------------------------------------------------
-	function ENCODE_1(&$m_cif){
-		//echo "<br>Cifrado tipo 1<br>";
-		// Llamada a los caracteres y caracteres aleatorios
-			$cara = array();
-			$ale = array();
-			$cara = caracteres();
-			$ale = caracteres_ale();
-		
-		//Verificado de qué caracteres será intercalados (Únicos)
-			$cont=0;
-			$pal = "";
-			for($b=0;$b<2;$b++){
-				foreach($m_cif[$b] as &$elemento){
-					//echo "<br>Elemento: ".$elemento."-fila: $b";
-					for($a=0;$a<strlen($elemento);$a++){
-						if($cont<2){
-							$pr = $elemento."";
-							//echo "-ele_mento: ".$pr[$a];
-							$pal.=$pr[$a];
-						}else{
-							if($pal>count($ale)-1)
-								$pal = $pal[0];
-							//echo "<br>-------ale: ".$ale[$pal]." pal: $pal";
-							$elemento = $elemento.$ale[$pal];
-							$cont=0;$pal="";
-							break;
+		function ENCODE_1(&$m_cif){
+			//echo "<br>Cifrado tipo 1<br>";
+			// Llamada a los caracteres y caracteres aleatorios
+				$cara = array();
+				$ale = array();
+				$cara = caracteres();
+				$ale = caracteres_ale();
+			
+			//Verificado de qué caracteres será intercalados (Únicos)
+				$cont=0;
+				$pal = "";
+				for($b=0;$b<2;$b++){
+					foreach($m_cif[$b] as &$elemento){
+						//echo "<br>Elemento: ".$elemento."-fila: $b";
+						for($a=0;$a<strlen($elemento);$a++){
+							if($cont<2){
+								$pr = $elemento."";
+								//echo "-ele_mento: ".$pr[$a];
+								$pal.=$pr[$a];
+							}else{
+								if($pal>count($ale)-1)
+									$pal = $pal[0];
+								//echo "<br>-------ale: ".$ale[$pal]." pal: $pal";
+								$elemento = $elemento.$ale[$pal];
+								$cont=0;$pal="";
+								break;
+							}
+							$cont++;
 						}
-						$cont++;
+					}
+					unset($elemento);
+				}
+				//echo "<br>Caracteres únicos intercalados: <br>";
+				//var_dump($m_cif);
+				
+			//Preparado del mensaje cifrado
+				$men_cifrado = "";
+				for($b=0;$b<2;$b++){
+					foreach($m_cif[$b] as $elemento){
+						$men_cifrado.= $elemento;
 					}
 				}
-				unset($elemento);
-			}
-			//echo "<br>Caracteres únicos intercalados: <br>";
-			//var_dump($m_cif);
 			
-		//Preparado del mensaje cifrado
-			$men_cifrado = "";
-			for($b=0;$b<2;$b++){
-				foreach($m_cif[$b] as $elemento){
-					$men_cifrado.= $elemento;
-				}
-			}
-		
-		//Retorno del mensaje cifrado
-			return ($men_cifrado);
-	}
-	function ENCODE_2(&$m_cif){
-		//echo "<br>Cifrado tipo 2<br>";
-		// Llamada a los caracteres y caracteres aleatorios
-			$cara = array();
-			$ale = array();
-			$cara = caracteres();
-			$ale = caracteres_ale();
-		
-		//Verificado de qué caracteres será intercalados (Aleatorios)
-			for($b=0;$b<2;$b++){
-				foreach($m_cif[$b] as &$elemento){
-					$var = rand(0, 51);
-					$elemento = $elemento.$ale[$var];
-				}
-				unset($elemento);
-			}
-			//echo "<br>Caracteres aleatorios intercalados: <br>";
-			//var_dump($m_cif);
+			//Retorno del mensaje cifrado
+				return ($men_cifrado);
+		}
+	//CIFRADO 2---------------------------------------------------------------------------------
+		function ENCODE_2(&$m_cif){
+			//echo "<br>Cifrado tipo 2<br>";
+			// Llamada a los caracteres y caracteres aleatorios
+				$cara = array();
+				$ale = array();
+				$cara = caracteres();
+				$ale = caracteres_ale();
 			
-		//Preparado del mensaje cifrado
-			$men_cifrado = "";
-			for($b=0;$b<2;$b++){
-				foreach($m_cif[$b] as $elemento){
-					$men_cifrado.= $elemento;
+			//Verificado de qué caracteres será intercalados (Aleatorios)
+				for($b=0;$b<2;$b++){
+					foreach($m_cif[$b] as &$elemento){
+						$var = rand(0, 51);
+						$elemento = $elemento.$ale[$var];
+					}
+					unset($elemento);
 				}
-			}
+				//echo "<br>Caracteres aleatorios intercalados: <br>";
+				//var_dump($m_cif);
+				
+			//Preparado del mensaje cifrado
+				$men_cifrado = "";
+				for($b=0;$b<2;$b++){
+					foreach($m_cif[$b] as $elemento){
+						$men_cifrado.= $elemento;
+					}
+				}
+			
+			//Retorno del mensaje cifrado
+				return($men_cifrado);
+		}
 		
-		//Retorno del mensaje cifrado
-			return($men_cifrado);
-	}
-	function ENCODE_3(&$m_cif){
-		//echo "hola";
-	}
+	//CIFRADO 3---------------------------------------------------------------------------------
+		function ENCODE_3(&$m_cif){
+			// Llamada a los caracteres y caracteres aleatorios
+				$cara = array();
+				$ale = array();
+				$cara = caracteres();
+				$ale = caracteres_ale();
+			
+			//Cubo de cifrado
+				//Convertimos el mensaje en una lista de 1xn
+					$m_cif2 = array();$cont = 0;
+					foreach($m_cif as $tabla){
+						foreach($tabla as $elemento){
+							$m_cif2[$cont] = $elemento;
+							$cont++;
+						}
+					}
+					var_dump($m_cif2);
+				//Verificamos si la lista es multiplo de 8 (un cubo)
+					if(count($m_cif2) % 8 != 0){
+						echo "<br> La tabla no es multiplo de 8, tiene ".count($m_cif2);
+						$a = count($m_cif2);
+						while(count($m_cif2) % 8 != 0){
+							$m_cif2[$a] = 0;
+							$a++;
+						}
+					}
+					echo "<br>Resultado del llenado del cubo: <br>";
+					imp_array($m_cif2, 1);
+				//Preparación y llenado del cubo de cifrado
+					$vertices_cubo = count($m_cif2);
+					echo "Vertices del cubo: ".$vertices_cubo;
+					$cubos = $vertices_cubo / 8;
+					$cubo = array();
+					$a = 0;$cont = 0;
+					while($a < $cubos){
+						echo '<br>Hola, estamos en el cubo nro: '.$a;
+						for($b = 0; $b < 8; $b++){
+							if($cont >= $vertices_cubo){
+								$cubo[$a][$b] = 0;
+							}else{
+								echo "<br>estamos en el elemento nro: $b de cont: $cont y m_cif es: ".$m_cif2[$cont];
+								$cubo[$a][$b] = $m_cif2[$cont];
+								$cont++;
+							}
+						}
+						$a++;
+					}
+					echo "El cubo esta conformado de la siguiente manera: <br>";
+					imp_array($cubo, 2);
+				//Número de vueltas del cubo (Aleatorio)
+					$vueltas = rand(1, 6);
+				//Girado del cubo
+					$reemplazo = array();
+					foreach ($cubo as $i => &$value) {
+						echo "<br>Estamos en el cubo ".$i."<br>";
+						foreach($value as $key => $valor){
+							$reemplazo[$key] = $valor;
+						}
+						echo "<br>Esto es lo que vale reemplazo:<br>";
+						imp_array($reemplazo, 1);
+
+						echo "<br>Rotando elementos:<br>";
+						/*
+							*	0 - 7 --> 3 vueltas
+							*
+							0 -> 0 + 3 = 3
+							1 -> 1 + 3 = 4
+							2 -> 2 + 3 = 5
+							3 -> 3 + 3 = 6
+							4 -> 4 + 3 = 7
+							5 -> 5 + 3 = 8 - 8 = 0
+							6 -> 6 + 3 = 9 - 8 = 1
+							7 -> 7 + 3 = 10 - 8 = 2
+						*/
+						for($a= 0; $a < 8; $a++){
+							//Calculo de nKey
+								$nKey = $a + $vueltas;
+								if($nKey >= 8){
+									$nKey -= 8;
+								}
+							//Rotado del elemento según el nKey
+								$value[$nKey] = $reemplazo[$a];
+								echo "<br>Elemento:".$a." => nKey:".$nKey;
+						}
+					}
+					unset($value);
+					echo "<br>El cubo rotado con ".$vueltas." vueltas:<br>";
+					imp_array($cubo, 2);
+				//Creación del mensaje cifrado
+					//Le agregamos el número de vueltas para el posterior descifrado
+						$cubo[][] = $vueltas;
+						echo "<br>El mensaje cifrado con el número de vueltas para el posterior descifrado:<br>";
+						imp_array($cubo, 2);
+					//Pasamos los elementos a una cadena
+						$m_cif = "";
+						foreach ($cubo as $valor) {
+							for($a = 0; $a < count($valor); $a++) {
+								$var = rand(0, 51);
+								$m_cif .= $valor[$a].$ale[$var];
+							}
+						}
+				//Retornamos el mensaje cifrado
+					return $m_cif;
+		}
 	
 
 //DESCIFRADO-----------------------------------------------------------------------------------
