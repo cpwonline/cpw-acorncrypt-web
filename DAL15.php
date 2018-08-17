@@ -147,7 +147,8 @@
 				foreach($array as $i => $elemento){
 					echo "<br>Fila ".$i."<br>";
 					for($a = 0; $a < count($elemento); $a++) {
-						echo "---".$a.":".$elemento[$a]."<br>";
+						if(isset($elemento[$a]))
+							echo "---".$a.":".$elemento[$a]."<br>";
 					}
 				}
 				break;
@@ -286,6 +287,59 @@
 				return($men_cifrado);
 		}
 		
+		function giradoDelCubo($cubo, $vueltas){
+					$reemplazo = array();
+					foreach ($cubo as $i => &$value) {
+						//echo "<br>Estamos en el cubo ".$i."<br>";
+						foreach($value as $key => $valor){
+							$reemplazo[$key] = $valor;
+						}
+						//echo "<br>Esto es lo que vale reemplazo:<br>";
+						//imp_array($reemplazo, 1);
+
+						//echo "<br>Rotando elementos:<br>";
+						/*
+							*	0 - 7 --> 3 vueltas
+							*
+							0 -> 0 + 3 = 3
+							1 -> 1 + 3 = 4
+							2 -> 2 + 3 = 5
+							3 -> 3 + 3 = 6
+							4 -> 4 + 3 = 7
+							5 -> 5 + 3 = 8 - 8 = 0
+							6 -> 6 + 3 = 9 - 8 = 1
+							7 -> 7 + 3 = 10 - 8 = 2
+
+							*	0 - 7 --> -3 vueltas
+							*
+							0 -> 0 + 3 = 3 - 3 = 0
+							1 -> 1 + 3 = 4 - 3 = 1
+							2 -> 2 + 3 = 5 - 3 = 2
+							3 -> 3 + 3 = 6 - 3 = 3
+							4 -> 4 + 3 = 7 -3 = 4
+							5 -> 5 + 3 = 8 - 8 = 0 -3 = -3
+							6 -> 6 + 3 = 9 - 8 = 1 -3 = -2
+							7 -> 7 + 3 = 10 - 8 = 2 -3 = -1
+						*/
+						for($a= 0; $a < 8; $a++){
+							//Calculo de nKey
+								$nKey = $a + $vueltas;
+								if($nKey >= 8)
+									$nKey -= 8;
+								elseif($nKey < 0)
+									$nKey += 8;
+
+							//Rotado del elemento según el nKey
+								$value[$nKey] = $reemplazo[$a];
+								//echo "<br>Elemento:".$a." => nKey:".$nKey;
+						}
+					}
+					unset($value);
+					//echo "<br>El cubo rotado con ".$vueltas." vueltas:<br>";
+					//imp_array($cubo, 2);
+					return $cubo;
+		}
+
 	//CIFRADO 3---------------------------------------------------------------------------------
 		function ENCODE_3(&$m_cif){
 			// Llamada a los caracteres y caracteres aleatorios
@@ -303,83 +357,50 @@
 							$cont++;
 						}
 					}
-					var_dump($m_cif2);
+					//var_dump($m_cif2);
 				//Verificamos si la lista es multiplo de 8 (un cubo)
 					if(count($m_cif2) % 8 != 0){
-						echo "<br> La tabla no es multiplo de 8, tiene ".count($m_cif2);
+						//echo "<br> La tabla no es multiplo de 8, tiene ".count($m_cif2);
 						$a = count($m_cif2);
 						while(count($m_cif2) % 8 != 0){
 							$m_cif2[$a] = 0;
 							$a++;
 						}
 					}
-					echo "<br>Resultado del llenado del cubo: <br>";
-					imp_array($m_cif2, 1);
+					//echo "<br>Resultado del llenado del cubo: <br>";
+					//imp_array($m_cif2, 1);
 				//Preparación y llenado del cubo de cifrado
 					$vertices_cubo = count($m_cif2);
-					echo "Vertices del cubo: ".$vertices_cubo;
+					//echo "Vertices del cubo: ".$vertices_cubo;
 					$cubos = $vertices_cubo / 8;
 					$cubo = array();
 					$a = 0;$cont = 0;
 					while($a < $cubos){
-						echo '<br>Hola, estamos en el cubo nro: '.$a;
+						//echo '<br>Hola, estamos en el cubo nro: '.$a;
 						for($b = 0; $b < 8; $b++){
 							if($cont >= $vertices_cubo){
 								$cubo[$a][$b] = 0;
 							}else{
-								echo "<br>estamos en el elemento nro: $b de cont: $cont y m_cif es: ".$m_cif2[$cont];
+								//echo "<br>estamos en el elemento nro: $b de cont: $cont y m_cif es: ".$m_cif2[$cont];
 								$cubo[$a][$b] = $m_cif2[$cont];
 								$cont++;
 							}
 						}
 						$a++;
 					}
-					echo "El cubo esta conformado de la siguiente manera: <br>";
-					imp_array($cubo, 2);
+					//echo "El cubo esta conformado de la siguiente manera: <br>";
+					//imp_array($cubo, 2);
+
 				//Número de vueltas del cubo (Aleatorio)
 					$vueltas = rand(1, 6);
 				//Girado del cubo
-					$reemplazo = array();
-					foreach ($cubo as $i => &$value) {
-						echo "<br>Estamos en el cubo ".$i."<br>";
-						foreach($value as $key => $valor){
-							$reemplazo[$key] = $valor;
-						}
-						echo "<br>Esto es lo que vale reemplazo:<br>";
-						imp_array($reemplazo, 1);
+					$cubo = giradoDelCubo($cubo, $vueltas);
 
-						echo "<br>Rotando elementos:<br>";
-						/*
-							*	0 - 7 --> 3 vueltas
-							*
-							0 -> 0 + 3 = 3
-							1 -> 1 + 3 = 4
-							2 -> 2 + 3 = 5
-							3 -> 3 + 3 = 6
-							4 -> 4 + 3 = 7
-							5 -> 5 + 3 = 8 - 8 = 0
-							6 -> 6 + 3 = 9 - 8 = 1
-							7 -> 7 + 3 = 10 - 8 = 2
-						*/
-						for($a= 0; $a < 8; $a++){
-							//Calculo de nKey
-								$nKey = $a + $vueltas;
-								if($nKey >= 8){
-									$nKey -= 8;
-								}
-							//Rotado del elemento según el nKey
-								$value[$nKey] = $reemplazo[$a];
-								echo "<br>Elemento:".$a." => nKey:".$nKey;
-						}
-					}
-					unset($value);
-					echo "<br>El cubo rotado con ".$vueltas." vueltas:<br>";
-					imp_array($cubo, 2);
 				//Creación del mensaje cifrado
 					//Le agregamos el número de vueltas para el posterior descifrado
 						$cubo[][] = $vueltas;
-						echo "<br>El mensaje cifrado con el número de vueltas para el posterior descifrado:<br>";
-						imp_array($cubo, 2);
+						//echo "<br>El mensaje cifrado con el número de vueltas para el posterior descifrado:<br>";
+						//imp_array($cubo, 2);
 					//Pasamos los elementos a una cadena
 						$m_cif = "";
 						foreach ($cubo as $valor) {
@@ -394,7 +415,6 @@
 	
 
 //DESCIFRADO-----------------------------------------------------------------------------------
-	//DESCIFRADO 1---------------------------------------------------------------------------------
 	function DAL15_DECODE(&$m, &$c, &$t){
 		// Llamada a los caracteres y caracteres aleatorios
 			$cara = array();
@@ -427,6 +447,30 @@
 					];
 					//echo "<br>Esta es la inversa: <br>";
 					//var_dump($c_inv);
+		//Llamado al tipo de cifrado
+			switch($t){
+				case 1:
+					return DECODE_1($m, $c_inv);
+					break;
+				case 2:
+					return DECODE_2($m, $c_inv);
+					break;
+				case 3:
+					return DECODE_3($m, $c_inv);
+					break;
+				default:
+					return 'ninguno';
+					break;
+			}
+	}
+	//DESCIFRADO 1 y 2 (parte final del 3) ---------------------------------------------------------------------------------
+		function DECODE_1(&$m, &$c_inv){
+		// Llamada a los caracteres y caracteres aleatorios
+			$cara = array();
+			$ale = array();
+			$cara = caracteres();
+			$ale = caracteres_ale();
+			
 		//MENSAJE
 			//Sustitución de los caracteres intercalados
 				$m_s = array();
@@ -485,6 +529,62 @@
 				}
 			//Retorno del Mensaje Descifrado
 			return($m_descifrado);
-	}
-	//DESCIFRADO 2---------------------------------------------------------------------------------
+		}
+	//DESCIFRADO 3 ---------------------------------------------------------------------------------
+		function DECODE_3(&$m, &$c_inv){
+
+		//MENSAJE
+			//Sustitución de los caracteres intercalados
+				$m_s = array();
+				for($a=0;$a<strlen($m);$a++){
+					if($m[$a] != "0" && $m[$a] != "1" && $m[$a] != "2" && $m[$a] != "3" && $m[$a] != "4" && $m[$a] != "5" && $m[$a] != "6" && $m[$a] != "7" && $m[$a] != "8" && $m[$a] != "9"){
+						echo "<br>m_a: ".$m[$a];
+						$m[$a] = "-";
+					}
+				}
+				echo "<br>Esta es la sustitución de caracteres: $m <br>";
+			//Separado a una matriz 
+				$m_s["a"] = explode("-", $m);
+				echo "<br>Esta es la tabla con los valores del mensaje: <br>";
+				imp_array($m_s, 2);
+			//Eliminación de elementos vacíos
+				unset($m_s["a"][count($m_s["a"])-1]);
+				if(in_array("", $m_s["a"])){
+					$ind = array_search("", $m_s["a"]);
+					$m_s["a"][$ind] = 0;
+					echo "elemento vacio cambiado por 0, ind: ".$ind;
+				}
+				echo "<br>Tabla sin elementos vacios: <br>";
+				imp_array($m_s, 2);
+			//Recogida del número de vueltas
+				$vueltas = $m_s["a"][count($m_s["a"])-1];
+				echo "<br>Numero de vueltas: ".$vueltas;
+			//Eliminado del numero de vueltas del mensaje
+				unset($m_s["a"][count($m_s["a"])-1]);
+				imp_array($m_s, 2);
+			//Desgirado del cubo
+				$cubo = giradoDelCubo($m_s, $vueltas);
+				echo "<br>Cubo desgirado: ";
+				imp_array($cubo, 2);
+			//Eliminado de elementos con "ceros"
+				foreach ($cubo["a"] as $key => $value) {
+					if($value != "0")
+						$cubo["b"][] = $value;
+				}
+				echo "<br>Cubo sin ceros: <br>";
+				imp_array($cubo["b"], 1);
+
+		}
+		function DECODE_GEN($m_s, $c_inv){
+
+		}
+	//Llamada a los caracteres
+		function llama_caracteres($r1, $r2, $tipo){
+			// Llamada a los caracteres y caracteres aleatorios
+				$cara = array();
+				$ale = array();
+				$cara = caracteres();
+				$ale = caracteres_ale();
+				
+		}
 ?>
