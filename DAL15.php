@@ -1,9 +1,51 @@
 <?php
 	//Sistema DAL15 (Data - Absoluteness - Latent)
+namespace DAL15{
+	class funcExt{
+		#Propiedades
+			private $hola;
+
+		#Métodos
+
+	}
+	class cifrado{
+		#Propiedades
+			private $hola;
+
+		#Métodos
+		
+	}
+	class descifrado{
+		#Propiedades
+			private $hola;
+
+		#Métodos
+		
+	}
+	class DAL15_gen{
+		#Propiedades
+			private $mensaje, $clave, $tipo;
+			public $resultado;
+
+		#Métodos
+			public function asignarValores($m, $c, $t){
+				$mensaje = $m;
+				$clave = $c;
+				$tipo = $t;
+			}
+	}
+
+	#Propiedades
+		$obj_cif = new cifrado();
+		$obj_des = new descifrado();
+		$obj_funcExt = new funcExt();
+
+	#Métodos
+
 
 //CARACTERES-----------------------------------------------------------------------------------
 	function caracteres(){
-		// Caracteres que se pueden codificar
+		// Caracteres que se pueden cifrar
 		return ['vacio', '','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '|', '!', '"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '*', '+', '~', '[', ']', '{','}', '^', '_', '-', '.', ',', ';', ':', '@', ' '];
 	}
 	function caracteres_ale(){
@@ -611,4 +653,6 @@
 				$ale = caracteres_ale();
 				
 		}
+		
+}
 ?>
