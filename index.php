@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Sistema de codificaci&oacute;n DAL15</title>
+		<title>Sistema DAL15</title>
 		<meta sharset="utf-8";>
 		<style>
 			*{padding:0;margin:0;}
