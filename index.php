@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Sistema DAL15</title>
+		<title>Sistema DAL15 | DAL15 System</title>
 		<meta sharset="utf-8";>
 		<style>
 			*{padding:0;margin:0;}
@@ -40,7 +40,8 @@
 	</head>
 	<body>
 		<h3>¡Hola! Bienvenido a DAL15</h3>
-		<h4>El sistema que le ayudar&aacute; a tener sus datos seguros</h3>
+		<h3>¡Hello! Welcome to DAL15</h3>
+		<h4>El sistema que le ayudar&aacute; a tener sus datos seguros. The system that will help you to have your data safe.</h3>
 		<form action="" method="POST" class="cifrado">
 			<?php
 				if(isset($_POST['mensaje_cifrar'])){
@@ -51,14 +52,14 @@
 			<?php
 				}else{
 			?>
-				<input placeholder="Mensaje" type="text" name="mensaje_cifrar"/>
-				<input placeholder="Clave" type="text"name="claveCO"/>
-					<input placeholder="Tipo" type="tel" name="tipo"/>
+				<input placeholder="Mensaje/Message" type="text" name="mensaje_cifrar"/>
+				<input placeholder="Clave/Password" type="text"name="claveCO"/>
+					<input placeholder="Tipo/Type" type="tel" name="tipo"/>
 			<?php
 				}
 			?>
 			
-			<button name="cifrar">cifrar</button>
+			<button name="cifrar">Cifrar/Encode</button>
 		</form>
 		<form action="" method="POST" class="descifrado">
 			<?php
@@ -70,29 +71,35 @@
 			<?php
 				}else{
 			?>
-				<input placeholder="Mensaje" type="text" name="mensaje_descifrar"/>
-				<input placeholder="Clave" type="text"name="claveDE"/>
-					<input placeholder="Tipo" type="tel" name="tipo"/>
+				<input placeholder="Mensaje/Message" type="text" name="mensaje_descifrar"/>
+				<input placeholder="Clave/Password" type="text"name="claveDE"/>
+					<input placeholder="Tipo/Type" type="tel" name="tipo"/>
 			<?php
 				}
 			?>
-			<button name="descifrar">descifrar</button>
+			<button name="descifrar">Descifrar/Decode</button>
 		</form>
 		<section class="results">
 		<?php
-			include('DAL15.php');
-			if(isset($_POST['cifrar'])){
-				$mensaje = $_POST['mensaje_cifrar'];//Mensaje CO
-				$clave=$_POST['claveCO'];
-				$tipo = $_POST['tipo'];
-				echo "<textarea class='result'>".DAL15_ENCODE($mensaje, $clave, $tipo)."</textarea>";
-			}
-			if(isset($_POST['descifrar'])){
-				$mensaje2 = $_POST['mensaje_descifrar'];//Mensaje DE
-				$clave2=$_POST['claveDE'];
-				$tipo = $_POST['tipo'];
-				echo "<textarea class='result'>".DAL15_DECODE($mensaje2, $clave2, $tipo)."</textarea>";
-			}
+			#Incluimos el archivo principal del sistema de cifrado/descifrado
+				include('DAL15.php');
+			#Comprobamos si se han enviado los datos para ser cifrados/descifrados
+				if(isset($_POST['cifrar'])){
+					#Declaramos los datos
+						$mensaje = $_POST['mensaje_cifrar'];//Mensaje CO
+						$clave=$_POST['claveCO'];
+						$tipo = $_POST['tipo'];
+					#Mostramos el resultado
+						echo "<textarea class='result'>".($DAL15->main($mensaje, $clave, $tipo, 1))."</textarea>";
+				}
+				if(isset($_POST['descifrar'])){
+					#Declaramos los datos
+						$mensaje = $_POST['mensaje_descifrar'];//Mensaje DE
+						$clave=$_POST['claveDE'];
+						$tipo = $_POST['tipo'];
+					#Mostramos el resultado
+						echo "<textarea class='result'>".($DAL15->main($mensaje, $clave, $tipo, -1))."</textarea>";
+				}
 			
 		?>
 		</section>
