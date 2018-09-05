@@ -68,27 +68,40 @@ namespace DAL15{
 									}
 								}
 							}
-							////echo "<br><br>Caracteres de la clave cambiados a: <br>";
-							////var_dump($c_s);
-							
+							//echo "<br><br>Caracteres de la clave cambiados a:<br>";
+							//$this->imp_array($c_s, 1);
+						//No deshacemos de combinaciones que puedan hacer al determinante igual a cero
+							if($c_s[0] == $c_s[2] && $c_s[1] == $c_s[3]){
+								$a = $c_s[0];
+								$c_s[0] = $c_s[1];
+								$c_s[1] = $a;
+							}
+							if($c_s[0] == $c_s[1] && $c_s[2] == $c_s[3]){
+								$a = $c_s[0];
+								$c_s[0] = $c_s[2];
+								$c_s[2] = $a;
+							}
+							if($c_s[0] == $c_s[1] && $c_s[0] == $c_s[2] && $c_s[0] == $c_s[3]){
+								$c_s[0] = 2;$c_s[1] = 6;$c_s[2] = 1;$c_s[3] = 5;
+							}
 						//Rellenado de la clave a 16 elementos
 							for($a=count($c_s);$a<16;$a++){
 								$c_s[$a] = 1;
 							}
-							////echo "<br>Clave con 16 elementos: <br>";
+							//echo "<br>Clave con 16 elementos: <br>";
 							//for($a=0;$a<16;$a++)
-								////echo $a."-".$c_s[$a]."<br>";
+							//	echo $a."-".$c_s[$a]."<br>";
 							
 						//Conversión de la Clave a 8 elementos
-							////echo "<br>Conversión a 8 elementos: <br>";
+							//echo "<br>Conversión a 8 elementos: <br>";
 							$c_8 = array();
 							$p = -1; $f = 16;
 							for($a=0;$a<8;$a++){
 								$p+=1;$f-=1;
 								$c_8[$a] = $c_s[$p].$c_s[$f];
-								////echo $a."-".$c_8[$a]."<br>";
+							//	echo $a."-".$c_8[$a]."<br>";
 							}
-							////echo "<br>Conversión a 4 elementos: <br>";
+							//echo "<br>Conversión a 4 elementos: <br>";
 							
 						//Conversión de la Clave a 4 elementos
 							$c_4 = array();
@@ -96,22 +109,26 @@ namespace DAL15{
 							for($a=0;$a<4;$a++){
 								$p+=1;$f-=1;
 								$c_4[$a] = $c_8[$p].$c_8[$f];
-								////echo $a."-".$c_4[$a]."<br>";
+							//	echo $a."-".$c_4[$a]."<br>";
 							}
 							
-							////echo "Clave final con 4 elementos (128 bits almacenados en una tabla de cuatro elementos): <br>";
-							////var_dump($c_4);
+							//echo "Clave final con 4 elementos (128 bits almacenados en una tabla de cuatro elementos): <br>";
+							////$this->imp_array($c_4, 1);
 							//De: tabla de 4 elementos a: Matriz de 2x2, cada una de 1 elementos
 							$c_m = [
 								0 => array($c_4[0], $c_4[1]),
 								1 => array($c_4[2], $c_4[3])
 							];
-							////echo "<br>Matriz de 2x2: <br>";
-							////var_dump($c_m);
+							//echo "<br>Matriz de 2x2: <br>";
+							$this->imp_array($c_m, 2);
 							return ($c_m);
 					}
 				//MULTIPLICACIÓN DE LAS MATRICES-----------------------------------------------------------------------------------
 					function cif_des(&$m_m, &$c_m){
+						//echo "<br>Mensaje para cifrar: ";
+						//$this->imp_array($m_m, 2);
+						//echo "<br>Clave para cifrar: ";
+						//$this->imp_array($c_m, 2);
 						$m_cif_des = array(array(), array());
 						for($b=0;$b<2;$b++){
 							for($a=0;$a<count($m_m[0]);$a++){
@@ -121,8 +138,8 @@ namespace DAL15{
 									$m_cif_des[$b][] = $c_m[$b][0]*$m_m[$b-1][$a] + $c_m[$b][1]*$m_m[$b][$a];
 							}
 						}
-						////echo "<br>Matriz de cifrado/descifrado del mensaje: <br>";
-						////var_dump($m_cif_des);
+						//echo "<br>Matriz de cifrado/descifrado del mensaje: <br>";
+						//$this->imp_array($m_cif_des, 2);
 						return $m_cif_des;
 					}
 				//De n elementos a 2xn-----------------------------------------------------------------------------------
@@ -157,9 +174,9 @@ namespace DAL15{
 				//Conversión de caracteres especiales a entidades HTML-------------------------------------------------------------------
 					function conv_cHTML($men){
 						$a = htmlentities($men);
-						$fp = fopen("fichero.txt", "w");
-						fputs($fp, $a);
-						fclose($fp);
+						//$fp = fopen("fichero.txt", "w");
+						//fputs($fp, $a);
+						//fclose($fp);
 						//echo "<br>Esta es el nuevo mensaje con entidades html: <textarea>".$a."</textarea>";
 						return $a;
 					}
@@ -449,25 +466,27 @@ namespace DAL15{
 					//Conversión de la clave a 128 bits
 						$c_m = array();
 						$c_m = $this->convClave($c);
+						//echo "Esta es la clave: $c y esta su converion a 128 bits: ";
+						//$this->imp_array($c_m, 2);
 					//INVERSA DE LA CLAVE
 						//Determinante
 							$c_det = $c_m[0][0]*$c_m[1][1]-$c_m[0][1]*$c_m[1][0];
 							if($c_det == 0) $c_det = 1;//Para evitar la disión entre 0
-							//echo "<br>Este es det: $c_det <br>";
+							echo "<br>Este es det: $c_det <br>";
 						//Adjunta
 							$c_adj = [
 								0 => array(0 => $c_m[1][1]*1, 1 => $c_m[0][1]*-1),
 								1 => array(0 => $c_m[1][0]*-1, 1 => $c_m[0][0]*1)
 							];
 							//echo "<br>Esta es la adj: <br>";
-							//var_dump($c_adj);
+							//$this->imp_array($c_adj, 2);
 						//Inversa Final
 							$c_inv = [
 								0 => array(0 => (1/$c_det)*$c_adj[0][0], 1=> (1/$c_det)*$c_adj[0][1]),
 								1 => array(0 => (1/$c_det)*$c_adj[1][0], 1=> (1/$c_det)*$c_adj[1][1])
 							];
-							//echo "<br>Esta es la inversa: <br>";
-							//var_dump($c_inv);
+							////echo "<br>Esta es la inversa: <br>";
+							//$this->imp_array($c_inv, 2);
 				//Llamado al tipo de cifrado
 					switch($t){
 						case 1:
@@ -537,22 +556,22 @@ namespace DAL15{
 					//Separado a una matriz 
 						$m_s["a"] = explode("-", $m);
 						//echo "<br>Esta es la tabla con los valores del mensaje: <br>";
-						//imp_array($m_s, 2);
+						//$this->imp_array($m_s, 2);
 					//Eliminación de elementos vacíos
 						unset($m_s["a"][count($m_s["a"])-1]);
 						if(in_array("", $m_s["a"])){
 							$ind = array_search("", $m_s["a"]);
 							$m_s["a"][$ind] = 0;
-							//echo "elemento vacio cambiado por 0, ind: ".$ind;
+							////echo "elemento vacio cambiado por 0, ind: ".$ind;
 						}
 						//echo "<br>Tabla sin elementos vacios: <br>";
-						//imp_array($m_s, 2);
+						//$this->imp_array($m_s, 2);
 					//Recogida del número de vueltas
 						$vueltas = $m_s["a"][count($m_s["a"])-1];
-						//echo "<br>Numero de vueltas: ".$vueltas;
+						echo "<br>Numero de vueltas: ".$vueltas;
 					//Eliminado del numero de vueltas del mensaje
 						unset($m_s["a"][count($m_s["a"])-1]);
-						//imp_array($m_s, 2);
+						//$this->imp_array($m_s, 2);
 						$m_ll = array();
 						$m_ll = $m_s["a"];
 					//Preparación y llenado del cubo de descifrado
@@ -560,7 +579,7 @@ namespace DAL15{
 					//Desgirado del cubo
 						$cubo2 = $this->giradoDelCubo($cubo, $vueltas, -1);
 						//echo "<br>Cubo desgirado: ";
-						//imp_array($cubo2, 2);
+						//$this->imp_array($cubo2, 2);
 						$cubo3 = array();$cubo4 = array();
 					//Eliminado de elementos con "ceros"
 						foreach ($cubo2 as $key => $value) {
@@ -570,7 +589,7 @@ namespace DAL15{
 							}
 						}
 						//echo "<br>Cubo sin ceros: <br>";
-						//imp_array($cubo3, 2);
+						//$this->imp_array($cubo3, 2);
 					//Llamada al descifrado general
 						//Creamos un solo array
 							$m_des = array();
@@ -592,13 +611,16 @@ namespace DAL15{
 					//Mensaje De: tabla de n elementos a Matriz de 2xn elementos
 						$m_m = array();
 						$m_m = $this->A_2xn($m_s);
-					
+						//echo "<br>Matriz de 2xn: <br>";
+						////$this->imp_array($m_m, 2);
+						////////echo "<br>Clave: <br>";
+						$this->imp_array($c_inv, 2);
 					//Multiplicado de las matrices (Mensaje y clave)
 						$m_des = array();
 						$m_des = $this->cif_des($m_m, $c_inv);
 						
-						//echo "<br>Descifrado de los caraceres: <br>";
-						//var_dump($m_des);
+						////echo "<br>Descifrado de los caraceres: <br>";
+						//$this->imp_array($m_des, 2);
 					//Conversión a números enteros
 					for($a=0;$a<2;$a++){
 						foreach($m_des[$a] as &$elemento){
@@ -607,7 +629,7 @@ namespace DAL15{
 						unset($elemento);
 					}
 					//echo "<br>Matriz con los números enteros: <br>";
-					//var_dump($m_des);
+					//$this->imp_array($m_des, 2);
 					
 					//Cambiado de números a caracteres
 						$m_descifrado = "";
