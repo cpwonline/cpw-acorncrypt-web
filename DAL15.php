@@ -1,5 +1,7 @@
 <?php
-	//Sistema DAL15 (Data - Absoluteness - Latent)
+
+	//Sistema DAL15 (Data - Absoluteness - Latent | Información - Absoluta - Oculta)
+
 namespace DAL15{
 	class DAL15_gen{
 		#Propiedades
@@ -505,101 +507,97 @@ namespace DAL15{
 			}
 			//DESCIFRADO 1 y 2 (parte final del 3) ---------------------------------------------------------------------------------
 				function DECODE_1(&$m, &$c_inv){
-				// Llamada a los caracteres y caracteres aleatorios
-					$cara = array();
-					$ale = array();
-					$cara = $this->caracteres();
-					$ale = $this->caracteres_ale();
-					
-				//MENSAJE
-					//Sustitución de los caracteres intercalados
-						$m_s = array();
-						for($a=0;$a<strlen($m);$a++){
-							if($m[$a] != "0" && $m[$a] != "1" && $m[$a] != "2" && $m[$a] != "3" && $m[$a] != "4" && $m[$a] != "5" && $m[$a] != "6" && $m[$a] != "7" && $m[$a] != "8" && $m[$a] != "9"){
-								//echo "<br>m_a: ".$m[$a];
-								$m[$a] = "-";
+					// Llamada a los caracteres y caracteres aleatorios
+						$cara = array();
+						$ale = array();
+						$cara = $this->caracteres();
+						$ale = $this->caracteres_ale();
+						
+					//MENSAJE
+						//Sustitución de los caracteres intercalados
+							$m_s = array();
+							for($a=0;$a<strlen($m);$a++){
+								if($m[$a] != "0" && $m[$a] != "1" && $m[$a] != "2" && $m[$a] != "3" && $m[$a] != "4" && $m[$a] != "5" && $m[$a] != "6" && $m[$a] != "7" && $m[$a] != "8" && $m[$a] != "9"){
+									//echo "<br>m_a: ".$m[$a];
+									$m[$a] = "-";
+								}
 							}
-						}
-						//echo "<br>Esta es la sustitución de caracteres: $m <br>";
-					//Separado a una matriz 
-						$m_s["a"] = explode("-", $m);
-						//echo "<br>Esta es la tabla con los valores del mensaje: <br>";
-						//var_dump($m_s);
-					//Eliminación de elementos vacíos
-						unset($m_s["a"][count($m_s["a"])-1]);
-						if(in_array("", $m_s["a"])){
-							$ind = array_search("", $m_s["a"]);
-							$m_s["a"][$ind] = 0;
-							//echo "elemento vacio cambiado por 0, ind: ".$ind;
-						}
-						//var_dump($m_s);
+							//echo "<br>Esta es la sustitución de caracteres: $m <br>";
+						//Separado a una matriz 
+							$m_s["a"] = explode("-", $m);
+							//echo "<br>Esta es la tabla con los valores del mensaje: <br>";
+							//var_dump($m_s);
+						//Eliminación de elementos vacíos
+							unset($m_s["a"][count($m_s["a"])-1]);
+							if(in_array("", $m_s["a"])){
+								$ind = array_search("", $m_s["a"]);
+								$m_s["a"][$ind] = 0;
+								//echo "elemento vacio cambiado por 0, ind: ".$ind;
+							}
+							//var_dump($m_s);
 
-					//Llamada al descifrado general
-						$this->DECODE_GEN($m_s, $c_inv);
-
-					
+						//Llamada al descifrado general
+							$this->DECODE_GEN($m_s, $c_inv);
 				}
 
 			//DESCIFRADO 3 ---------------------------------------------------------------------------------
 				function DECODE_3(&$m, &$c_inv){
-
-				//MENSAJE
-					//Sustitución de los caracteres intercalados
-						$m_s = array();
-						for($a=0;$a<strlen($m);$a++){
-							if($m[$a] != "0" && $m[$a] != "1" && $m[$a] != "2" && $m[$a] != "3" && $m[$a] != "4" && $m[$a] != "5" && $m[$a] != "6" && $m[$a] != "7" && $m[$a] != "8" && $m[$a] != "9"){
-								//echo "<br>m_a: ".$m[$a];
-								$m[$a] = "-";
-							}
-						}
-						//echo "<br>Esta es la sustitución de caracteres: $m <br>";
-					//Separado a una matriz 
-						$m_s["a"] = explode("-", $m);
-						//echo "<br>Esta es la tabla con los valores del mensaje: <br>";
-						//$this->imp_array($m_s, 2);
-					//Eliminación de elementos vacíos
-						unset($m_s["a"][count($m_s["a"])-1]);
-						if(in_array("", $m_s["a"])){
-							$ind = array_search("", $m_s["a"]);
-							$m_s["a"][$ind] = 0;
-							////echo "elemento vacio cambiado por 0, ind: ".$ind;
-						}
-						//echo "<br>Tabla sin elementos vacios: <br>";
-						//$this->imp_array($m_s, 2);
-					//Recogida del número de vueltas
-						$vueltas = $m_s["a"][count($m_s["a"])-1];
-						echo "<br>Numero de vueltas: ".$vueltas;
-					//Eliminado del numero de vueltas del mensaje
-						unset($m_s["a"][count($m_s["a"])-1]);
-						//$this->imp_array($m_s, 2);
-						$m_ll = array();
-						$m_ll = $m_s["a"];
-					//Preparación y llenado del cubo de descifrado
-						$cubo = $this->llenaCubo($m_ll);
-					//Desgirado del cubo
-						$cubo2 = $this->giradoDelCubo($cubo, $vueltas, -1);
-						//echo "<br>Cubo desgirado: ";
-						//$this->imp_array($cubo2, 2);
-						$cubo3 = array();$cubo4 = array();
-					//Eliminado de elementos con "ceros"
-						foreach ($cubo2 as $key => $value) {
-							for($a = 0; $a < count($value); $a++){
-								if($value[$a] != "0")
-									$cubo3[$key][] = $value[$a];
-							}
-						}
-						//echo "<br>Cubo sin ceros: <br>";
-						//$this->imp_array($cubo3, 2);
-					//Llamada al descifrado general
-						//Creamos un solo array
-							$m_des = array();
-							foreach ($cubo3 as $valor) {
-								for($a = 0; $a < count($valor); $a++){
-									$m_des["a"][] = $valor[$a];
+					//MENSAJE
+						//Sustitución de los caracteres intercalados
+							$m_s = array();
+							for($a=0;$a<strlen($m);$a++){
+								if($m[$a] != "0" && $m[$a] != "1" && $m[$a] != "2" && $m[$a] != "3" && $m[$a] != "4" && $m[$a] != "5" && $m[$a] != "6" && $m[$a] != "7" && $m[$a] != "8" && $m[$a] != "9"){
+									//echo "<br>m_a: ".$m[$a];
+									$m[$a] = "-";
 								}
 							}
-							$this->DECODE_GEN($m_des, $c_inv);
-
+							//echo "<br>Esta es la sustitución de caracteres: $m <br>";
+						//Separado a una matriz 
+							$m_s["a"] = explode("-", $m);
+							//echo "<br>Esta es la tabla con los valores del mensaje: <br>";
+							//$this->imp_array($m_s, 2);
+						//Eliminación de elementos vacíos
+							unset($m_s["a"][count($m_s["a"])-1]);
+							if(in_array("", $m_s["a"])){
+								$ind = array_search("", $m_s["a"]);
+								$m_s["a"][$ind] = 0;
+								////echo "elemento vacio cambiado por 0, ind: ".$ind;
+							}
+							//echo "<br>Tabla sin elementos vacios: <br>";
+							//$this->imp_array($m_s, 2);
+						//Recogida del número de vueltas
+							$vueltas = $m_s["a"][count($m_s["a"])-1];
+							echo "<br>Numero de vueltas: ".$vueltas;
+						//Eliminado del numero de vueltas del mensaje
+							unset($m_s["a"][count($m_s["a"])-1]);
+							//$this->imp_array($m_s, 2);
+							$m_ll = array();
+							$m_ll = $m_s["a"];
+						//Preparación y llenado del cubo de descifrado
+							$cubo = $this->llenaCubo($m_ll);
+						//Desgirado del cubo
+							$cubo2 = $this->giradoDelCubo($cubo, $vueltas, -1);
+							//echo "<br>Cubo desgirado: ";
+							//$this->imp_array($cubo2, 2);
+							$cubo3 = array();$cubo4 = array();
+						//Eliminado de elementos con "ceros"
+							foreach ($cubo2 as $key => $value) {
+								for($a = 0; $a < count($value); $a++){
+									if($value[$a] != "0")
+										$cubo3[$key][] = $value[$a];
+								}
+							}
+							//echo "<br>Cubo sin ceros: <br>";
+							//$this->imp_array($cubo3, 2);
+						//Llamada al descifrado general
+							//Creamos un solo array
+								$m_des = array();
+								foreach ($cubo3 as $valor) {
+									for($a = 0; $a < count($valor); $a++){
+										$m_des["a"][] = $valor[$a];
+									}
+								}
+								$this->DECODE_GEN($m_des, $c_inv);
 				}
 				function DECODE_GEN($m_s, $c_inv){
 					// Llamada a los caracteres y caracteres aleatorios

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Sistema DAL15 | DAL15 System</title>
-		<meta sharset="utf-8";>
+		<meta sharset="utf-8">
 		<style>
 			*{padding:0;margin:0;}
 			body{padding:2cm 0 2cm 0;font-family:sans-serif;text-align:center;}
