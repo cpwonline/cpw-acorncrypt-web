@@ -111,7 +111,6 @@ namespace DAL15{
 								0 => array($c_4[0], $c_4[1]),
 								1 => array($c_4[2], $c_4[3])
 							];
-							$this->imp_array($c_m, 2);
 							return ($c_m);
 					}
 				//MULTIPLICACIÓN DE LAS MATRICES-----------------------------------------------------------------------------------
@@ -412,7 +411,6 @@ namespace DAL15{
 						//Determinante
 							$c_det = $c_m[0][0]*$c_m[1][1]-$c_m[0][1]*$c_m[1][0];
 							if($c_det == 0) $c_det = 1;//Para evitar la disión entre 0
-							echo "<br>Este es det: $c_det <br>";
 						//Adjunta
 							$c_adj = [
 								0 => array(0 => $c_m[1][1]*1, 1 => $c_m[0][1]*-1),
@@ -495,7 +493,6 @@ namespace DAL15{
 							
 						//Recogida del número de vueltas
 							$vueltas = $m_s["a"][count($m_s["a"])-1];
-							echo "<br>Numero de vueltas: ".$vueltas;
 
 						//Eliminado del numero de vueltas del mensaje
 							unset($m_s["a"][count($m_s["a"])-1]);
@@ -537,7 +534,6 @@ namespace DAL15{
 					//Mensaje De: tabla de n elementos a Matriz de 2xn elementos
 						$m_m = array();
 						$m_m = $this->A_2xn($m_s);
-						$this->imp_array($c_inv, 2);
 
 					//Multiplicado de las matrices (Mensaje y clave)
 						$m_des = array();
